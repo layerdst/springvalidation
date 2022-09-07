@@ -7,6 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -43,32 +46,32 @@ public class ValidationItemControllerV2 {
     }
 
     @PostMapping("/add")
-    public String addItem(@ModelAttribute Item item, RedirectAttributes redirectAttributes, Model model) {
-        Map<String, String> errors = new HashMap<>();
+    public String addItemV1(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+//        Map<String, String> errors = new HashMap<>();
+        ;
 
         if(!StringUtils.hasText(item.getItemName())){
-            errors.put("itemName", "상품이름을 필수 입니다");
+            bindingResult.addError(new FieldError("item", "itemName", "상품이름은 필수 입니다"));
         }
 
         if(item.getPrice()==null || item.getPrice()<1000 || item.getPrice() > 1000000){
-            errors.put("price","가격은 1000~1000000 까지 허용합니다" );
+            bindingResult.addError(new FieldError("item", "price", "가격은 1000~1000000까지 허용합니다"));
         }
 
         if(item.getQuantity()==null || item.getQuantity() >= 9999){
-            errors.put("quantity", "수량은 최대 9999개 까지입니다");
+            bindingResult.addError(new FieldError("item", "qauntity", "최대수량은 9999입니다"));
         }
 
         if(item.getPrice()!= null && item.getQuantity() != null){
             int resultPrices = item.getPrice() * item.getQuantity();
             if(resultPrices<10000){
-                errors.put("globalError", "가격 * 수량 합은 10000원 이상이어야합니다.  현재값 "+ resultPrices);
+                bindingResult.addError(new ObjectError("item", "가격 수량의 합은 1000000입니다"));
             }
         }
 
         //검증에 실패하면 다시 입력폼으로
-        if(!errors.isEmpty()){
-            log.info("errors = {}", errors);
-            model.addAttribute("errors", errors);
+        if(bindingResult.hasErrors()){
+            log.info("errors = {}", bindingResult);
             return "validation/v2/addForm";
         }
 
