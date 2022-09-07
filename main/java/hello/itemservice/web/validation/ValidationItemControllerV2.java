@@ -45,7 +45,7 @@ public class ValidationItemControllerV2 {
         return "validation/v2/addForm";
     }
 
-    @PostMapping("/add")
+//    @PostMapping("/add")
     public String addItemV1(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
 //        Map<String, String> errors = new HashMap<>();
         ;
@@ -82,6 +82,93 @@ public class ValidationItemControllerV2 {
         redirectAttributes.addAttribute("status", true);
         return "redirect:/validation/v2/items/{itemId}";
     }
+
+//    @PostMapping("/add")
+    public String addItemV2(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+//        Map<String, String> errors = new HashMap<>();
+        ;
+
+        if(!StringUtils.hasText(item.getItemName())){
+
+            bindingResult.addError(new FieldError("item", "itemName", item.getItemName(), false, null, null, "상품이름은 필수 입니다"));
+
+        }
+
+        if(item.getPrice()==null || item.getPrice()<1000 || item.getPrice() > 1000000){
+            bindingResult.addError(new FieldError("item", "price", item.getPrice(), false, null, null, "가격은 1000~1000000까지 허용합니다"));
+
+        }
+
+        if(item.getQuantity()==null || item.getQuantity() >= 9999){
+            bindingResult.addError(new FieldError("item", "qauntity", item.getQuantity(),false, null, null, "최대수량은 9999입니다"));
+        }
+
+        if(item.getPrice()!= null && item.getQuantity() != null){
+            int resultPrices = item.getPrice() * item.getQuantity();
+            if(resultPrices<10000){
+                bindingResult.addError(new ObjectError("item", null, null,"가격 수량의 합은 1000000입니다"));
+            }
+        }
+
+
+
+        //검증에 실패하면 다시 입력폼으로
+        if(bindingResult.hasErrors()){
+            log.info("errors = {}", bindingResult);
+            return "validation/v2/addForm";
+        }
+
+
+
+        Item savedItem = itemRepository.save(item);
+        redirectAttributes.addAttribute("itemId", savedItem.getId());
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/validation/v2/items/{itemId}";
+    }
+
+    @PostMapping("/add")
+    public String addItemV3(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+//        Map<String, String> errors = new HashMap<>();
+        ;
+
+        if(!StringUtils.hasText(item.getItemName())){
+
+            bindingResult.addError(new FieldError("item", "itemName", item.getItemName(), false, new String[]{"required.item.itemName"}, null, null));
+
+        }
+
+        if(item.getPrice()==null || item.getPrice()<1000 || item.getPrice() > 1000000){
+            bindingResult.addError(new FieldError("item", "price", item.getPrice(), false, new String[]{"range.item.price"}, new Object[]{1000,100000}, null));
+
+        }
+
+        if(item.getQuantity()==null || item.getQuantity() >= 9999){
+            bindingResult.addError(new FieldError("item", "qauntity", item.getQuantity(),false, null, null, "최대수량은 9999입니다"));
+        }
+
+        if(item.getPrice()!= null && item.getQuantity() != null){
+            int resultPrices = item.getPrice() * item.getQuantity();
+            if(resultPrices<10000){
+                bindingResult.addError(new ObjectError("item", null, null,"가격 수량의 합은 1000000입니다"));
+            }
+        }
+
+
+
+        //검증에 실패하면 다시 입력폼으로
+        if(bindingResult.hasErrors()){
+            log.info("errors = {}", bindingResult);
+            return "validation/v2/addForm";
+        }
+
+
+
+        Item savedItem = itemRepository.save(item);
+        redirectAttributes.addAttribute("itemId", savedItem.getId());
+        redirectAttributes.addAttribute("status", true);
+        return "redirect:/validation/v2/items/{itemId}";
+    }
+
 
     @GetMapping("/{itemId}/edit")
     public String editForm(@PathVariable Long itemId, Model model) {
