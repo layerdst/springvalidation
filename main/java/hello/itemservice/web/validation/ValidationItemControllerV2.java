@@ -143,13 +143,13 @@ public class ValidationItemControllerV2 {
         }
 
         if(item.getQuantity()==null || item.getQuantity() >= 9999){
-            bindingResult.addError(new FieldError("item", "qauntity", item.getQuantity(),false, null, null, "최대수량은 9999입니다"));
+            bindingResult.addError(new FieldError("item", "quantity", item.getQuantity(),false, new String[]{"max.item.quantity"}, new Object[]{9999}, null));
         }
 
         if(item.getPrice()!= null && item.getQuantity() != null){
             int resultPrices = item.getPrice() * item.getQuantity();
             if(resultPrices<10000){
-                bindingResult.addError(new ObjectError("item", null, null,"가격 수량의 합은 1000000입니다"));
+                bindingResult.addError(new ObjectError("item", new String[]{"totalPriceMin"}, new Object[]{10000, resultPrices},null));
             }
         }
 
