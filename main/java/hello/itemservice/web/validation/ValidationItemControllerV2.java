@@ -131,9 +131,11 @@ public class ValidationItemControllerV2 {
     @PostMapping("/add")
     public String addItemV3(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
 //        Map<String, String> errors = new HashMap<>();
-        
+
         if(!StringUtils.hasText(item.getItemName())){
             bindingResult.addError(new FieldError("item", "itemName", item.getItemName(), false, new String[]{"required.item.itemName"}, null, null));
+
+
         }
 
         if(item.getPrice()==null || item.getPrice()<1000 || item.getPrice() > 1000000){
