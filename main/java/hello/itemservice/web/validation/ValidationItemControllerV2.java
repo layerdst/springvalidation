@@ -135,12 +135,10 @@ public class ValidationItemControllerV2 {
         if(!StringUtils.hasText(item.getItemName())){
             bindingResult.addError(new FieldError("item", "itemName", item.getItemName(), false, new String[]{"required.item.itemName"}, null, null));
 
-
         }
 
         if(item.getPrice()==null || item.getPrice()<1000 || item.getPrice() > 1000000){
             bindingResult.addError(new FieldError("item", "price", item.getPrice(), false, new String[]{"range.item.price"}, new Object[]{1000,100000}, null));
-
         }
 
         if(item.getQuantity()==null || item.getQuantity() >= 9999){
@@ -174,9 +172,6 @@ public class ValidationItemControllerV2 {
     @GetMapping("/add")
     public String addItemV4(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
 //        Map<String, String> errors = new HashMap<>();
-
-
-
 
         if(!StringUtils.hasText(item.getItemName())){
             bindingResult.rejectValue("itemName","required");
