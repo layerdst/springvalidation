@@ -9,28 +9,28 @@ import org.springframework.validation.ObjectError;
 
 public class MessageCodeResolver {
 
-    MessageCodesResolver codesResolver = new DefaultMessageCodesResolver();
-
-    @Test
-    void messageCodesResolverObject(){
-        String[] mes = codesResolver.resolveMessageCodes("required", "item");
-        for (String me : mes) {
-            System.out.println(me);
-
-        }
-        Assertions.assertThat(mes).containsExactly("required.item", "required");
-    }
-
-    @Test
-    void messageCodesResolverField(){
-        String[] strings = codesResolver.resolveMessageCodes("required", "item", "itemName", String.class);
-        for (String messages : strings){
-            System.out.println(messages);
-        }
-        Assertions.assertThat(strings).containsExactly("required.item.itemName",
-                "required.itemName"
-                ,"required.java.lang.String"
-                ,"required");
-    }
+//    MessageCodesResolver codesResolver = new DefaultMessageCodesResolver();
+//
+//    @Test
+//    void messageCodesResolverObject(){
+//        String[] mes = codesResolver.resolveMessageCodes("required", "item");
+//        for (String me : mes) {
+//            System.out.println(me);
+//
+//        }
+//        Assertions.assertThat(mes).containsExactly("required.item", "required");
+//    }
+//
+//    @Test
+//    void messageCodesResolverField(){
+//        String[] strings = codesResolver.resolveMessageCodes("required", "item", "itemName", String.class);
+//        for (String messages : strings){
+//            System.out.println(messages);
+//        }
+//        Assertions.assertThat(strings).containsExactly("required.item.itemName",
+//                "required.itemName"
+//                ,"required.java.lang.String"
+//                ,"required");
+//    }
 
 }

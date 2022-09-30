@@ -128,7 +128,7 @@ public class ValidationItemControllerV2 {
         return "redirect:/validation/v2/items/{itemId}";
     }
 
-    @PostMapping("/add")
+//    @PostMapping("/add")
     public String addItemV3(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
 //        Map<String, String> errors = new HashMap<>();
 
@@ -152,14 +152,11 @@ public class ValidationItemControllerV2 {
             }
         }
 
-
-
         //검증에 실패하면 다시 입력폼으로
         if(bindingResult.hasErrors()){
             log.info("errors = {}", bindingResult);
             return "validation/v2/addForm";
         }
-
 
 
         Item savedItem = itemRepository.save(item);
@@ -169,9 +166,12 @@ public class ValidationItemControllerV2 {
     }
 
 
-    @GetMapping("/add")
+    @PostMapping("/add")
     public String addItemV4(@ModelAttribute Item item, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
 //        Map<String, String> errors = new HashMap<>();
+
+        log.info("objectName={}", bindingResult.getObjectName());
+        log.info("target={}", bindingResult.getTarget());
 
         if(!StringUtils.hasText(item.getItemName())){
             bindingResult.rejectValue("itemName","required");
@@ -192,14 +192,11 @@ public class ValidationItemControllerV2 {
             }
         }
 
-
-
         //검증에 실패하면 다시 입력폼으로
         if(bindingResult.hasErrors()){
             log.info("errors = {}", bindingResult);
             return "validation/v2/addForm";
         }
-
 
 
         Item savedItem = itemRepository.save(item);
