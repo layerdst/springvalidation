@@ -44,8 +44,11 @@ public class ValidationItemControllerV1 {
 
     @PostMapping("/add")
     public String addItem(@ModelAttribute Item item, RedirectAttributes redirectAttributes, Model model) {
+
+        //검증 오류 결과를 보관
         Map<String, String> errors = new HashMap<>();
 
+        //검증 로직
         if(!StringUtils.hasText(item.getItemName())){
             errors.put("itemName", "상품이름을 필수 입니다");
         }
