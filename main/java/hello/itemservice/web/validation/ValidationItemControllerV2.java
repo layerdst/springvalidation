@@ -26,6 +26,11 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ValidationItemControllerV2 {
 
+    /**
+     * bindingResult 는 V1에서 컨트롤러가 호출되지 않는 오류 (TypeMismatch 등) 정보를 bindingResult에 담아서 컨트롤러에 정상적으로 호출한다.
+     * bindingResult 대신 Errors 를 사용하여도 되나, 편의 메소드가 적다.
+     */
+
     private final ItemRepository itemRepository;
     private final ItemValidator itemValidator;
 
