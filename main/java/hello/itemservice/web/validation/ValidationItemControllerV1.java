@@ -20,6 +20,13 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ValidationItemControllerV1 {
 
+    /*
+    * 해당 버전의 validation 처리는 type 오류 처리가 안된다.
+    * 'Item' 의 price, quantity 같은 숫자 필드 타입이 Integer이므로 문자타입으로 설정하는 것이 불가능한데,
+    * 문자타입이 들어오면 오류가 발생한다.
+    * 해당 오류는 컨트롤러에 진입전에 예외가 발생되어 컨트롤러가 제대로 호출되지 않는다.
+    * */
+
     private final ItemRepository itemRepository;
 
     @GetMapping
@@ -76,7 +83,7 @@ public class ValidationItemControllerV1 {
         }
 
 
-
+        //성공 로직
         Item savedItem = itemRepository.save(item);
         redirectAttributes.addAttribute("itemId", savedItem.getId());
         redirectAttributes.addAttribute("status", true);
